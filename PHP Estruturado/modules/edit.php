@@ -16,12 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     die();
 }
 
-$stmt = $module->prepare('SELECT * FROM modules WHERE id=?');
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$result = $stmt->get_result();
 
-$data = $result->fetch_assoc();
+$data = $module->find($id);
 
 
 ?>

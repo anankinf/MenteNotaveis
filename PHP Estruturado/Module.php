@@ -4,13 +4,6 @@ class Module
 {
 	
 	private $db;
-
-	private $id;
-	private $title;
-	private $description;
-    private $status;
-    private $created_at;
-    private $updated_at;
 	
 	function __construct(Mysqli $mysqli)
 	{
