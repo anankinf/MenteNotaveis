@@ -36,3 +36,11 @@ Preencha as informações conforme o ambiente de teste, lembrando de manter o no
  - $user 	= "root";
  - $pass	= "secret";
  - $database = "mnteste";
+ 
+ Para executar a aplicação, abra um prompt de comando acesse a pasta raíz da aplicação e execute o comando:
+ 
+ - php -S localhost:8001
+ 
+ Abra um navegador e acesse o endereço: http://localhost:8001/
+ 
+ OBS.: é necessario estar conectado a internet pois os arquivos estilização do bootstrap estão sendo vinculados através do link cbn
