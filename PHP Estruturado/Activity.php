@@ -15,10 +15,10 @@ class Activity
 		$stmt->prepare("SELECT * FROM activities WHERE id = ?");
 		$stmt->bind_param("i",$id);
 		$stmt->execute();
-		$stmt->bind_result($id,$title,$description,$status,$created_at,$updated_at );
+		$stmt->bind_result($id,$title,$description,$status,$created_at,$updated_at, $module_id );
 		$stmt->fetch();
 
-		$data = ["id" => $id,"title" => $title,"description" => $description,"status" => $status,"created_at" => $created_at,"updated_at" => $updated_at];
+		$data = ["id" => $id,"title" => $title,"description" => $description,"status" => $status,"created_at" => $created_at,"updated_at" => $updated_at, "module_id" => $module_id];
         return $data;
 
 	}
