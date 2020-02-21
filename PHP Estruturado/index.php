@@ -74,7 +74,7 @@ $collection = $module->list();
                                         <th scope="row"><?php echo $data['id']; ?></th>
                                         <td><?php echo utf8_encode($data['title']); ?></td>
                                         <td><?php echo $data['status']; ?></td>
-                                        <td><a href="#" class="btn btn-sm btn-primary">Editar</a></td>
+                                        <td><a href="modules/edit.php?id=<?php echo $data['id']; ?>" class="btn btn-sm btn-primary">Editar</a></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
