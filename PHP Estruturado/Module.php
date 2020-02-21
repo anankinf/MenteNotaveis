@@ -18,7 +18,9 @@ class Module
 		$stmt->bind_result($id,$title,$description,$status,$created_at,$updated_at );
 		$stmt->fetch();
 
-		return array("id"=>$id,"title"=>$title,"description"=>$description,"status"=>$status,"created_at"=>$created_at,"updated_at"=>$updated_at,);
+		$data = ["id" => $id,"title" => $title,"description" => $description,"status" => $status,"created_at" => $created_at,"updated_at" => $updated_at];
+        return $data;
+
 	}
 
 	public function list($order = null){
