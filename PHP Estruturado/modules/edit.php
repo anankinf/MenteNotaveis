@@ -1,9 +1,11 @@
 <?php
 
 require_once("../Module.php");
+require_once("../Activity.php");
 require_once("../connection.php");
 
 $id = $_GET['id'] ?? null;
+$module_id = $id;
 
 $module = new Module($mysqli);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -16,8 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     die();
 }
 
+$retModule = $module->find($id);
 
-$data = $module->find($id);
+$activity = new Activity($mysqli);
+
+$collection = $activity->list($module_id);
 
 
 ?>
@@ -66,25 +71,25 @@ $data = $module->find($id);
                             <form action="create.php" method="POST">
 
                                 <div class="row">
-                                    <div class="col-6">Cadastrado: <?php echo utf8_encode($data['created_at']) ?></div>
-                                    <div class="col-6">Última atualização: <?php echo utf8_encode($data['updated_at']) ?></div>
+                                    <div class="col-6">Cadastrado: <?php echo utf8_encode($retModule['created_at']) ?></div>
+                                    <div class="col-6">Última atualização: <?php echo utf8_encode($retModule['updated_at']) ?></div>
                                 </div>
                                 <hr>
                                 <div class="form-group">
                                     <label for="title">Título</label>
-                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo utf8_encode($data['title']) ?>">
+                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo utf8_encode($retModule['title']) ?>">
                                     <small id="titleHelp" class="form-text text-muted">Capriche no título para que todos saibam do que se trata.</small>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="description">Descrição</label>
-                                    <textarea class="form-control" id="description" name="description" rows="4"><?php echo utf8_encode($data['description']) ?></textarea>
+                                    <textarea class="form-control" id="description" name="description" rows="4"><?php echo utf8_encode($retModule['description']) ?></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select class="form-control" id="status" name="status">
-                                        <option value="<?php echo $data['status'] ?>"><?php echo $data['status'] ?></option>
+                                        <option value="<?php echo $retModule['status'] ?>"><?php echo $retModule['status'] ?></option>
                                         <option value="Pendente">Pendente</option>
                                         <option value="Aprovado">Aprovado</option>
                                         <option value="Cancelado">Cancelado</option>
@@ -120,19 +125,18 @@ $data = $module->find($id);
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @forelse($module->activity as $activity)
-                                            <tr>
-                                                <th scope="row">{{ $activity->id }}</th>
-                                                <td>{{ $activity->title }}</td>
-                                                <td>{{ $activity->status }}</td>
-                                                <td><a href="{{ route('activities.edit', ['activity' => $activity->id]) }}" class="btn btn-sm btn-primary">Editar</a></td>
-                                            </tr>
+                                            <?php foreach ($collection as $data) : ?>
+                                                <tr>
+                                                    <th scope="row"><?php echo $data['id']; ?></th>
+                                                    <td><?php echo utf8_encode($data['title']); ?></td>
+                                                    <td><?php echo $data['status']; ?></td>
+                                                    <td><a href="../activities/edit.php?id=<?php echo $data['id']; ?>" class="btn btn-sm btn-primary">Editar</a></td>
+                                                </tr>
+                                            <?php endforeach; ?>
                                             </tbody>
-
                                         </table>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
@@ -147,11 +151,10 @@ $data = $module->find($id);
                                         </button>
                                     </div>
                                     <div class="modal-body text-left">
-                                        @csrf
                                         <div class="form-group">
                                             <label for="title">Módulo</label>
-                                            <input type="text" class="form-control" id="module_id" name="module_id" value="{{ $module->id }}" hidden>
-                                            <input type="text" class="form-control" value="{{ $module->title }}" disabled> {{--Campo usado somente para apresentar o titulo do módulo--}}
+                                            <input type="text" class="form-control" id="module_id" name="module_id" value="<?php echo $retModule['id'] ?>" hidden>
+                                            <input type="text" class="form-control" value="<?php echo utf8_encode($retModule['title']) ?>" disabled>
                                         </div>
 
                                         <div class="form-group">
